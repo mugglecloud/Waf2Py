@@ -25,16 +25,20 @@ from gluon.languages import read_possible_languages
 
 app = 'Waf2Py'
 
-possible_languages = read_possible_languages(abspath('applications', app))
+possible_languages = read_possible_languages(
+    abspath('applications', app))
 # ----------------------------------------------------------------------------------------------------------------------
 # NOTE! app - is an application based router's parameter with name of an application. E.g.'welcome'
 # ----------------------------------------------------------------------------------------------------------------------
 
+print(abspath('applications', app))
+print(possible_languages)
+
 routers = {
-    'BASE': dict(default_application=app),
+    'BASE': dict(default_application=app,),
     app: dict(
         # default_language=possible_languages['default'][0],
-        default_language='zh',
+        default_language=possible_languages.get('zh-cn', 'zh'),
         languages=[lang for lang in possible_languages if lang != 'default']
     )
 }
