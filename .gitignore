@@ -9,3 +9,7 @@
 *.html.bak
 *.err
 __pycache__/
+.vscode
+errors/
+sessions/
+.vscode
