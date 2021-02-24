@@ -22,23 +22,27 @@
 
 from gluon.fileutils import abspath
 from gluon.languages import read_possible_languages
+import sys
+import logging
 
 app = 'Waf2Py'
+log = logging.getLogger()
+log.setLevel(logging.INFO)
 
 possible_languages = read_possible_languages(
-    abspath('applications', app))
+    abspath('applications', app, 'languages'))
 # ----------------------------------------------------------------------------------------------------------------------
 # NOTE! app - is an application based router's parameter with name of an application. E.g.'welcome'
 # ----------------------------------------------------------------------------------------------------------------------
 
-print(abspath('applications', app))
-print(possible_languages)
+# log.info(possible_languages)
+log.info(possible_languages['zh-cn'][0])
 
 routers = {
     'BASE': dict(default_application=app,),
     app: dict(
         # default_language=possible_languages['default'][0],
-        default_language=possible_languages.get('zh-cn', 'zh'),
+        default_language=possible_languages['zh-cn'][0],
         languages=[lang for lang in possible_languages if lang != 'default']
     )
 }
