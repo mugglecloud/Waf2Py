@@ -66,7 +66,7 @@
     'Database %s select': '已选择 %s 数据库',
     'Database Administration (appadmin)': '数据库管理 (appadmin)',
     'db': 'db',
-    'DB Model': '数据库模型',
+    'DB Model': '数据库模式',
     'Delete:': '删除:',
     'Demo': 'Demo',
     'Deployment Recipes': 'Deployment Recipes',
@@ -286,5 +286,6 @@
     'Notice': '注意',
     'Application': '应用',
     'Create a new application': '创建应用',
-    'Add a new application': '添加应用'
+    'Add a new application': '添加应用',
+    'Websites': '网站'
 }

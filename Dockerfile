@@ -1,25 +1,25 @@
-FROM mugglecloud/web2py-gevent
-
-USER root
-
-RUN apt-get update
-RUN apt-get install -y apt-utils net-tools lsof sudo python3-pip openssl libgeoip-dev procps git
-RUN pip3 install psutil netifaces geoip
+FROM mugglecloud/nginx-modsecurity
 
 WORKDIR /home/src
+
+COPY sources.list .
+COPY pip.conf .
+RUN rm /etc/apt/sources.list && mv sources.list /etc/apt/ && mkdir -p ~/.pip && mv pip.conf ~/.pip/
+
+RUN apt-get update
+RUN apt-get install -y apt-utils unzip wget net-tools lsof sudo python3-pip openssl libgeoip-dev procps git
+RUN pip3 install --upgrade pip && pip install psutil netifaces geoip gevent
+
+RUN mkdir -p /home/web2py/web2py
+
+RUN cd /home/web2py/ && \
+  wget -c http://web2py.com/examples/static/web2py_src.zip && \
+  unzip -o web2py_src.zip && \
+  rm -rf /home/web2py/web2py/applications/examples && \
+  rm -rf /home/web2py/web2py/applications/welcome && \
+  chmod 755 -R /home/web2py/web2py
+
 COPY . .
-
-#create folders and set permissions
-RUN ["/bin/bash", "-c", "mkdir -p /opt/waf/nginx/etc/{sites-available,geoip,sites-available,sites-enabled,backend,modsec_rules,modsecurity_conf,ssl,listen,rewrite/paths,rewrite/headers,crs,static/html}"]
-RUN ["/bin/bash", "-c", "mkdir -p /opt/waf/nginx/cache/{static,temp}"]
-
-RUN cd /opt/waf/nginx/etc/crs/ \
-  && git clone https://github.com/coreruleset/coreruleset.git \
-  && cd coreruleset \
-  && mv crs-setup.conf.example  crs-setup.conf \
-  && sed -i 's/SecDefaultAction/#SetDefaultAction/g' crs-setup.conf
-RUN cd /opt/waf/nginx/etc/crs/ \
-  && ln -s coreruleset -T owasp-modsecurity-crs
 
 ENV APP=Waf2Py
 
@@ -31,3 +31,12 @@ RUN ln -s /home/src -T /home/web2py/web2py/applications/${APP}
 RUN ln -s /home/src/web2py-routes.py -T /home/web2py/web2py/routes.py
 
 WORKDIR /home/web2py/web2py/
+
+EXPOSE 8000
+
+USER root
+
+COPY entrypoint.sh .
+RUN chmod u+x ./entrypoint.sh
+CMD [ "./entrypoint.sh" ]
+# CMD python /home/web2py/web2py/anyserver.py -s gevent -i 0.0.0.0 -p 8000

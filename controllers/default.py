@@ -571,7 +571,7 @@ def Websites():
         enabled_tab = 'active'
         enabled_exp = 'true'
 
-    return dict(query=query, page="Websites", icon="fa fa-cloud", title="", enabled=enabled_counter, disabled=disabled_counter,
+    return dict(query=query, page=T("Websites"), icon="fa fa-cloud", title="", enabled=enabled_counter, disabled=disabled_counter,
                 disabled_tab=disabled_tab, disabled_exp=disabled_exp, enabled_exp=enabled_exp, enabled_tab=enabled_tab)
 
 
