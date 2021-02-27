@@ -62,7 +62,7 @@ def captcha_validator(form):
 @auth.requires_login()
 def Media():
 
-    return dict(icon="fa fa-star", page="Media icons tribute", title="Media tributing")
+    return dict(icon="fa fa-star", page=T("Media icons tribute"), title=T("Media tributing"))
 
 
 @auth.requires_login()
@@ -96,7 +96,10 @@ def GeneralConfig():
     # else:
     #    response.
 
-    return dict(form=form, icon="fa fa-pencil", page="General configuration", title="Waf2Py - general configuration", test_smtp=test_smtp)
+    attention_recaptcha = T("When you enable Recaptcha, first be sure the public and private key are working. DONT LOGOUT, open \
+another browser or private mode and try to log in to see if captcha correctly set up. Be sure your domain \
+or ip is in the white list domain for google recaptcha.")
+    return dict(form=form, attention_recaptcha=attention_recaptcha, icon="fa fa-pencil", page=T("General configuration"), title=T("Waf2Py - general configuration"), test_smtp=test_smtp)
 
 
 @auth.requires_login()
@@ -108,7 +111,7 @@ def Users():
     except:
         pass
 
-    return dict(form=form,  icon="fa fa-user-group", page="User Managament", title="Waf2Py - User Managament")
+    return dict(form=form,  icon="fa fa-user-group", page=T("User Management"), title=T("Waf2Py - User Management"))
 
 
 @auth.requires_login()
@@ -148,6 +151,7 @@ def SaveCRSConf():
 def CRSSetupEdit():
     a = stuffs.Filtro()
     b = a.CheckStr(request.args(0))
+    content = None
     if b != 'YES':
         response.flash = 'Incorrect format id'
         content = None
@@ -163,16 +167,17 @@ def CRSSetupEdit():
             query_rule = db((db.rules.id_rand == request.args(0)) & (
                 db.rules.rule_name == 'crs-setup.conf')).select(db.rules.body).first()
             if not query_rule:
-                f = open(crs_conf, 'r')
-                content = f.read()
-                f.close()
+                if os.path.exists(crs_conf):
+                    f = open(crs_conf, 'r')
+                    content = f.read()
+                    f.close()
             else:
                 content = query_rule.body
         else:
             response.flash = "Incorrect id"
             content = None
 
-    return dict(icon="fa fa-pencil", page="Core Rule Set Configuration", title="Waf2Py - CRS Configuration Editor", content=content, rule_name='CRS-setup.conf')
+    return dict(icon="fa fa-pencil", page=T("Core Rule Set Configuration"), title=T("Waf2Py - CRS Configuration Editor"), content=content, rule_name='CRS-setup.conf')
 
 
 @auth.requires_login()
@@ -453,7 +458,7 @@ def check():
 
 @auth.requires_login()
 def Manage():
-    return dict(icon="mdi mdi-engine", page="Manage the Engine", title="Start/Reload/Stop the Engine")
+    return dict(icon="mdi mdi-engine", page=T("Manage the Engine"), title=T("Start/Reload/Stop the Engine"))
 
 
 @auth.requires_login()
@@ -502,23 +507,26 @@ def ProdEdit():
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             rules_that_exist, rules_that_exist_err = r.communicate()
 
+            app_path = '/opt/waf/nginx/etc/modsec_rules/' + \
+                query[0]['app_name']
+            rules_list_path = app_path+'/rules.list'
             # Remove list if exist
-            os.system('rm /opt/waf/nginx/etc/modsec_rules/' +
-                      query[0]['app_name']+'/rules.list')
+            if os.path.exists(rules_list_path):
+                os.system('rm ' + rules_list_path)
 
+            if not os.path.exists(app_path):
+                os.makedirs(app_path)
             # Create an empty file
-            os.system('touch /opt/waf/nginx/etc/modsec_rules/' +
-                      query[0]['app_name']+'/rules.list')
+            os.system('touch ' + rules_list_path)
             # print(rules_that_exist)
-            f = open('/opt/waf/nginx/etc/modsec_rules/' +
-                     query[0]['app_name']+'/rules.list', 'w')
+            f = open(rules_list_path, 'w')
 
             for i in rules_that_exist.splitlines():
                 f.write(str(i).replace("b'", "").replace("'", ""))
                 f.write('\n')
                 rule_list.append(str(i).replace("b'", "").replace("'", ""))
             f.close()
-            return dict(r_states=r_states, rule_list=rule_list, query=query, query2=query2, certificate=certificate, page="Editing "+query[0]['app_name'], icon="fa fa-pencil", title="Modify the configuration")
+            return dict(r_states=r_states, rule_list=rule_list, query=query, query2=query2, certificate=certificate, page=T("Editing") + " "+query[0]['app_name'], icon="fa fa-pencil", title="Modify the configuration")
 
     else:
         response.flash = 'Error in data supplied'
@@ -930,12 +938,12 @@ def status():
     running = p2.communicate()[0]
 
     if 'nginx' in str(out1):
-        status = "Nginx running and apps running"
+        status = T("Nginx running and apps running")
 
     elif 'nginx: master' in str(running):
-        status = "Nginx running but 0 apps running"
+        status = T("Nginx running but 0 apps running")
     else:
-        status = "Nginx not running"
+        status = T("Nginx not running")
     return status
 
 

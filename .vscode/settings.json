@@ -1,3 +1,10 @@
 {
-  "python.pythonPath": "/home/localhost/venv/py3/bin/python"
+  "python.pythonPath": "/home/localhost/venv/py3/bin/python",
+  "python.analysis.extraPaths": [
+    "./modules",
+    ".web2py"
+  ],
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportUndefinedVariable": "none",
+  }
 }

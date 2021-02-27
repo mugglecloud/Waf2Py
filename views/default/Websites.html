@@ -9,13 +9,13 @@
             <li class="{{=enabled_tab}}">
                 <a href="#running" data-toggle="tab" aria-expanded="{{=enabled_tab}}">
                     <span class="visible-xs"><i class="fa fa-play-circle-o"></i></span>
-                    <span class="hidden-xs">Websites Running ({{=enabled}})</span>
+                    <span class="hidden-xs">{{=T("Websites Running")}} ({{=enabled}})</span>
                 </a>
             </li>
             <li class="{{=disabled_tab}}">
                 <a href="#disabled" data-toggle="tab" aria-expanded="{{=disabled_exp}}">
                     <span class="visible-xs"><i class="fa fa-clock-o"></i></span>
-                    <span class="hidden-xs">Websites Disabled ({{=disabled}})</span>
+                    <span class="hidden-xs">{{=T("Websites Disabled")}} ({{=disabled}})</span>
                 </a>
             </li>
 
@@ -28,15 +28,15 @@
                                         <table class="table  table-hover table-bordered">
                                             <thead >
                                             <tr>
-                                                <th style="vertical-align: middle; text-align: center;">Name</th>
-                                                <th style="vertical-align: middle; text-align: center;">Aplication</th>
-                                                <th style="vertical-align: middle; text-align: center;">Listens to</th>
-                                                <th style="vertical-align: middle; text-align: center;">Real web server</th>
-                                                <th style="vertical-align: middle; text-align: center;">Logs</th>
-                                                <th style="vertical-align: middle; text-align: center;">Status</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Name")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Aplication")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Listens to")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Real web server")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Logs")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Status")}}</th>
                                                 
-                                                <th style="vertical-align: middle; text-align: center;">Mode</th>
-                                                <th style="vertical-align: middle; text-align: center;">Actions</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Mode")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Actions")}}</th>
                                                 
                                             </tr>
                                             </thead>
@@ -57,26 +57,26 @@
                                              <div align="center" class="form-group">
                                               <select class="form-control" id="sel" name="sel" style="width:auto; vertical-align: middle;" onfocus="this.oldvalue = this.value;" onchange="ChangeMode.call(this, event, '{{=str(row['id_rand'])}}', '{{=str(row['mode'])}}');this.oldvalue = this.value;">
                                             {{if row['mode'] == 'Defend':}}
-                                                <option id="OptionDefend" value="Defend" selected>Defend</option>
-                                                <option id="OptionVigilant" value="Vigilant">Vigilant</option>
-                                                <option id="OptionBridge" value="Bridge">Bridge</option>
+                                                <option id="OptionDefend" value="Defend" selected>{{=T("Defend")}}</option>
+                                                <option id="OptionVigilant" value="Vigilant">{{=T("Vigilant")}}</option>
+                                                <option id="OptionBridge" value="Bridge">{{=T("Bridge")}}</option>
                                             {{elif row['mode'] == 'Vigilant':}}
-                                                <option id="OptionDefend" selected>Vigilant</option>
-                                                <option id="OptionVigilant">Defend</option>
-                                                <option id="OptionBridge">Bridge</option>
+                                                <option id="OptionDefend" selected>{{=T("Vigilant")}}</option>
+                                                <option id="OptionVigilant">{{=T("Defend")}}</option>
+                                                <option id="OptionBridge">{{=T("Bridge")}}</option>
                                             {{else:}}
-                                                <option id="OptionDefend"  selected>Bridge</option>
-                                                <option id="OptionVigilant">Defend</option>
-                                                <option id="OptionBridge" >Vigilant</option>
+                                                <option id="OptionDefend"  selected>{{=T("Bridge")}}</option>
+                                                <option id="OptionVigilant">{{=T("Defend")}}</option>
+                                                <option id="OptionBridge" >{{=T("Vigilant")}}</option>
                                             {{pass}}
                                               </select>
                                             </div>
                                               </td>
                                               <td style="vertical-align: middle; text-align: center; ">
-                                                  <a class="btn btn-xs glyphicon glyphicon-pencil info_bulma" href="{{=URL('default','ProdEdit/'+ row['id_rand'])}}" data-toggle="tooltip" data-placement="top" title="Edit application"></a>
-                                                  <a class="btn btn-xs success_bulma glyphicon glyphicon-play" onclick="EnableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="Enable application"></a>  
-                                                  <a class="btn btn-xs warning_bulma glyphicon glyphicon-pause" onclick="DisableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="Disable application"></a>  
-                                                  <a class="btn btn-xs danger_bulma glyphicon glyphicon-trash" onclick="DeleteWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="Remove application"></a>
+                                                  <a class="btn btn-xs glyphicon glyphicon-pencil info_bulma" href="{{=URL('default','ProdEdit/'+ row['id_rand'])}}" data-toggle="tooltip" data-placement="top" title="{{=T("Edit application")}}"></a>
+                                                  <a class="btn btn-xs success_bulma glyphicon glyphicon-play" onclick="EnableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="{{=T("Enable application")}}"></a>  
+                                                  <a class="btn btn-xs warning_bulma glyphicon glyphicon-pause" onclick="DisableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="{{=T("Disable application")}}"></a>  
+                                                  <a class="btn btn-xs danger_bulma glyphicon glyphicon-trash" onclick="DeleteWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="{{=T("Remove application")}}"></a>
                                             </tr>
 
                                             {{else:}}
@@ -109,15 +109,15 @@
                                         <table class="table table-hover table-bordered ">
                                             <thead >
                                             <tr>
-                                                <th style="vertical-align: middle; text-align: center;">Name</th>
-                                                <th style="vertical-align: middle; text-align: center;">Aplication</th>
-                                                <th style="vertical-align: middle; text-align: center;">Listens to</th>
-                                                <th style="vertical-align: middle; text-align: center;">Real web server</th>
-                                                <th style="vertical-align: middle; text-align: center;">Logs</th>
-                                                <th style="vertical-align: middle; text-align: center;">Status</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Name")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Application")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Listens to")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Real web server")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Logs")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Status")}}</th>
                                                 
-                                                <th style="vertical-align: middle; text-align: center;">Mode</th>
-                                                <th style="vertical-align: middle; text-align: center;">Actions</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Mode")}}</th>
+                                                <th style="vertical-align: middle; text-align: center;">{{=T("Actions")}}</th>
                                                 
                                             </tr>
                                             </thead>
@@ -154,10 +154,10 @@
                                             </div>
                                               </td>
                                               <td style="vertical-align: middle; text-align: center;">
-                                                  <a class="btn btn-xs info_bulma glyphicon glyphicon-pencil" href="{{=URL('default','ProdEdit/'+ row['id_rand'])}}" data-toggle="tooltip" data-placement="top" title="Edit application"></a>
-                                                  <a class="btn btn-xs success_bulma glyphicon glyphicon-play" onclick="EnableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="Enable application"></a>  
-                                                  <a class="btn btn-xs warning_bulma glyphicon glyphicon-pause" onclick="DisableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="Disable application"></a>  
-                                                  <a class="btn btn-xs danger_bulma glyphicon glyphicon-trash" onclick="DeleteWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="Remove application"></a></td>
+                                                  <a class="btn btn-xs info_bulma glyphicon glyphicon-pencil" href="{{=URL('default','ProdEdit/'+ row['id_rand'])}}" data-toggle="tooltip" data-placement="top" title="{{=T("Edit application")}}"></a>
+                                                  <a class="btn btn-xs success_bulma glyphicon glyphicon-play" onclick="EnableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="{{=T("Enable application")}}"></a>  
+                                                  <a class="btn btn-xs warning_bulma glyphicon glyphicon-pause" onclick="DisableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="{{=T("Disable application")}}"></a>  
+                                                  <a class="btn btn-xs danger_bulma glyphicon glyphicon-trash" onclick="DeleteWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip" data-placement="top" title="{{=T("Remove application")}}"></a></td>
                                             </tr>
 
                                             {{else:}}
@@ -270,7 +270,7 @@ function EnableWebsite(id, name){
 
 function DeleteWebsite(id, name){
       swal({
-       title: "Delete Website: " + name + ' ?',
+       title: T("Delete Website: ") + name + ' ?',
        type: 'question',
        showCancelButton: true,
        confirmButtonColor: '#008fd4',

@@ -8,7 +8,7 @@ RUN rm /etc/apt/sources.list && mv sources.list /etc/apt/ && mkdir -p ~/.pip && 
 
 RUN apt-get update
 RUN apt-get install -y apt-utils unzip wget net-tools lsof sudo python3-pip openssl libgeoip-dev procps git
-RUN pip3 install --upgrade pip && pip install psutil netifaces geoip gevent
+RUN pip3 install --upgrade pip && pip install psutil netifaces geoip gunicorn
 
 RUN mkdir -p /home/web2py/web2py
 
@@ -39,4 +39,4 @@ USER root
 COPY entrypoint.sh .
 RUN chmod u+x ./entrypoint.sh
 CMD [ "./entrypoint.sh" ]
-# CMD python /home/web2py/web2py/anyserver.py -s gevent -i 0.0.0.0 -p 8000
+# CMD python /home/web2py/web2py/anyserver.py -s gunicorn -i 0.0.0.0 -p 8000

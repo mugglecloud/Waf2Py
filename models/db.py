@@ -1,29 +1,37 @@
 # Chris - cvaras@itsec.cl
 # -*- coding: utf-8 -*-
+from gluon.tools import Recaptcha2
+from gluon.tools import Auth
+from gluon.contrib.appconfig import AppConfig
 import datetime
 
-db = DAL ('sqlite://waf2py.sqlite',folder='/home/www-data/waf2py_community/applications/Waf2Py/databases')
-db2 = DAL ('sqlite://waf_logs.sqlite',folder='/home/www-data/waf2py_community/applications/Waf2Py/databases')
+db = DAL('sqlite://waf2py.sqlite',
+         folder='/home/www-data/waf2py_community/applications/Waf2Py/databases')
+db2 = DAL('sqlite://waf_logs.sqlite',
+          folder='/home/www-data/waf2py_community/applications/Waf2Py/databases')
 
 # -------------------------------------------------------------------------
 # app configuration made easy. Look inside private/appconfig.ini
 # -------------------------------------------------------------------------
-from gluon.contrib.appconfig import AppConfig
 myconf = AppConfig(reload=False)
 
 # choose a style for forms
 # -------------------------------------------------------------------------
-#response.formstyle = myconf.get('forms.formstyle')  # or 'bootstrap3_stacked' or 'bootstrap2' or other
+# response.formstyle = myconf.get('forms.formstyle')  # or 'bootstrap3_stacked' or 'bootstrap2' or other
 response.formstyle = 'bootstrap4_stacked'
 response.form_label_separator = myconf.get('forms.separator') or ': '
+
+
 def widget(**kwargs):
     return lambda field, value, kwargs=kwargs: SQLFORM.widgets[field.type].widget(field, value, **kwargs)
 
+
 db.define_table('examples',
-                Field('conf_name', 'string', length=30,requires=IS_NOT_EMPTY()),
+                Field('conf_name', 'string', length=30,
+                      requires=IS_NOT_EMPTY()),
                 Field('data_conf', 'text', requires=IS_NOT_EMPTY()),
                 Field('description', 'text', requires=IS_NOT_EMPTY()),
-                Field('autor', 'string', length=15,requires=IS_NOT_EMPTY()),
+                Field('autor', 'string', length=15, requires=IS_NOT_EMPTY()),
                 )
 
 db.define_table('basic_conf',
@@ -32,42 +40,57 @@ db.define_table('basic_conf',
                 )
 
 db.define_table('new_app',
-                Field('app_name', 'string', length=100, requires=IS_NOT_EMPTY()),
+                Field('app_name', 'string', length=100,
+                      requires=IS_NOT_EMPTY()),
                 Field('nginx_conf_data', 'text', requires=IS_NOT_EMPTY()),
                 Field('modsec_conf_data', 'text', requires=IS_NOT_EMPTY()),
-                Field('autor', 'string', length=15,requires=IS_NOT_EMPTY()),
-                Field('description', 'string', length=50,requires=IS_NOT_EMPTY()),
+                Field('autor', 'string', length=15, requires=IS_NOT_EMPTY()),
+                Field('description', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
                 Field('checked', 'integer', length=1, requires=IS_NOT_EMPTY()),
-                Field('deployed', 'integer',  length=1,requires=IS_NOT_EMPTY()),
-                Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('name', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('vhost_id', 'integer', length=4,requires=IS_NOT_EMPTY()),
-                Field('plbsid_id', 'integer', length=4,requires=IS_NOT_EMPTY()),
-                Field('fail_timeout', 'integer', length=3,default='60',requires=IS_NOT_EMPTY()),
-                Field('max_fails', 'integer', length=2,default='1',requires=IS_NOT_EMPTY()),
+                Field('deployed', 'integer',  length=1,
+                      requires=IS_NOT_EMPTY()),
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('name', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('vhost_id', 'integer', length=4,
+                      requires=IS_NOT_EMPTY()),
+                Field('plbsid_id', 'integer', length=4,
+                      requires=IS_NOT_EMPTY()),
+                Field('fail_timeout', 'integer', length=3,
+                      default='60', requires=IS_NOT_EMPTY()),
+                Field('max_fails', 'integer', length=2,
+                      default='1', requires=IS_NOT_EMPTY()),
                 Field('backend_ip', 'string', requires=IS_NOT_EMPTY()),
-                Field('listen_ip', 'string', length=45,requires=IS_NOT_EMPTY()),
+                Field('listen_ip', 'string', length=45,
+                      requires=IS_NOT_EMPTY()),
                 )
 
 db.define_table('production',
-                Field('app_name', 'string', length=100,requires=IS_NOT_EMPTY()),
+                Field('app_name', 'string', length=100,
+                      requires=IS_NOT_EMPTY()),
                 Field('nginx_conf_data', 'text', requires=IS_NOT_EMPTY()),
                 Field('modsec_conf_data', 'text', requires=IS_NOT_EMPTY()),
-                Field('autor', 'string', length=30,requires=IS_NOT_EMPTY()),
-                Field('description', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('enabled', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('listening', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('name', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('vhost_id', 'integer', length=4,requires=IS_NOT_EMPTY()),
-                Field('plbsid_id', 'integer', length=4,requires=IS_NOT_EMPTY()),
-                Field('fail_timeout', 'integer', length=3,default='60'),
-                Field('max_fails', 'integer', length=2,default='1'),
+                Field('autor', 'string', length=30, requires=IS_NOT_EMPTY()),
+                Field('description', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('enabled', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('listening', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
+                Field('name', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('vhost_id', 'integer', length=4,
+                      requires=IS_NOT_EMPTY()),
+                Field('plbsid_id', 'integer', length=4,
+                      requires=IS_NOT_EMPTY()),
+                Field('fail_timeout', 'integer', length=3, default='60'),
+                Field('max_fails', 'integer', length=2, default='1'),
                 #Field('backend_ip', 'string', requires=IS_NOT_EMPTY()),
-                Field('listen_ip', 'string', length=45,requires=IS_NOT_EMPTY()),
-                Field('mode', 'string', length=10, default="Defend", requires=IS_IN_SET(["Defend","Vigilant","Bridge"])),
-                Field('ports_http', 'string', length=5,default="80"),
-                Field('ports_https', 'string', length=5,default="443"),
+                Field('listen_ip', 'string', length=45,
+                      requires=IS_NOT_EMPTY()),
+                Field('mode', 'string', length=10, default="Defend",
+                      requires=IS_IN_SET(["Defend", "Vigilant", "Bridge"])),
+                Field('ports_http', 'string', length=5, default="80"),
+                Field('ports_https', 'string', length=5, default="443"),
                 Field('extra_headers', 'string', default=""),
                 Field('paths_denied', 'string', default=""),
                 Field('backend_ip_http', 'string', default=""),
@@ -90,11 +113,14 @@ db.define_table('logs',
 
 
 db.define_table('system',
-                Field('iface_ip', 'string',requires=IS_NOT_EMPTY()),
-                Field('iface_name', 'string', length=10,requires=IS_NOT_EMPTY()),
-                Field('used_by', 'string', length=100,requires=IS_NOT_EMPTY()),
-                Field('available', 'string', length=20,default="Available",requires=IS_NOT_EMPTY()),
-                Field('number', 'integer', length=2,requires=IS_NOT_EMPTY()),
+                Field('iface_ip', 'string', requires=IS_NOT_EMPTY()),
+                Field('iface_name', 'string', length=10,
+                      requires=IS_NOT_EMPTY()),
+                Field('used_by', 'string', length=100,
+                      requires=IS_NOT_EMPTY()),
+                Field('available', 'string', length=20,
+                      default="Available", requires=IS_NOT_EMPTY()),
+                Field('number', 'integer', length=2, requires=IS_NOT_EMPTY()),
                 )
 
 db.define_table('certificate',
@@ -107,38 +133,42 @@ db.define_table('certificate',
                 Field('ciphers', 'string'))
 
 db2.define_table('log_app',
-                Field('username'),
-                Field('time'),
-                Field('msg', 'text'))
+                 Field('username'),
+                 Field('time'),
+                 Field('msg', 'text'))
 
 db2.define_table('log_error',
-                Field('username'),
-                Field('time'),
-                Field('msg', 'text'))
+                 Field('username'),
+                 Field('time'),
+                 Field('msg', 'text'))
 
 db.define_table('exclusions',
-                Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('rules_id', 'string', length=10, requires=IS_NOT_EMPTY()),
-                Field('attack_name', 'string', length=30, requires=IS_NOT_EMPTY()),
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('rules_id', 'string', length=10,
+                      requires=IS_NOT_EMPTY()),
+                Field('attack_name', 'string', length=30,
+                      requires=IS_NOT_EMPTY()),
                 Field('type', 'integer', length=1, requires=IS_NOT_EMPTY()),
                 Field('local_path', 'string', requires=IS_NOT_EMPTY()),
                 Field('user', 'string'),
-                Field('custom_id', 'integer', length=6,requires=IS_NOT_EMPTY())
+                Field('custom_id', 'integer', length=6, requires=IS_NOT_EMPTY())
                 )
 
 db.define_table('routes',
-                Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
                 Field('ip', requires=IS_NOT_EMPTY()),
                 Field('gw_ip', requires=IS_NOT_EMPTY()),
                 Field('iface', requires=IS_NOT_EMPTY()))
 
 db.define_table('logs_file',
-                Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-                Field('log_name', 'string', length=100,requires=IS_NOT_EMPTY()),
-                Field('type', 'string', length=6,requires=IS_NOT_EMPTY()),
-                Field('size', 'string', length=10,requires=IS_NOT_EMPTY()),
-                Field('date', 'string', length=10,requires=IS_NOT_EMPTY()),
-                Field('id_rand2', 'string', length=50,requires=IS_NOT_EMPTY()),
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('log_name', 'string', length=100,
+                      requires=IS_NOT_EMPTY()),
+                Field('type', 'string', length=6, requires=IS_NOT_EMPTY()),
+                Field('size', 'string', length=10, requires=IS_NOT_EMPTY()),
+                Field('date', 'string', length=10, requires=IS_NOT_EMPTY()),
+                Field('id_rand2', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
                 )
 
 db.define_table('n_interfaces',
@@ -146,51 +176,62 @@ db.define_table('n_interfaces',
                 )
 
 db.define_table('general_config',
-                Field('smtp_user', 'string', label='SMTP Username', widget=widget(_placeholder='user@mail.com'), requires=IS_NOT_EMPTY()),
-                Field('smtp_pass', 'password', label='SMTP Password', widget=widget(_placeholder='****'), requires=IS_NOT_EMPTY()),
-                Field('smtp_sender', 'string', label='SMTP Sender',widget=widget(_placeholder='some_mail@mail.com'),requires=IS_EMAIL()),
-                Field('smtp_host', 'string', label='SMTP Host',widget=widget(_placeholder='smtp.gmail.com'), requires=IS_NOT_EMPTY()),
-                Field('smtp_port', 'integer', label='SMTP Port',length=5, widget=widget(_placeholder='587'),requires=IS_INT_IN_RANGE(1, 65535, error_message='Invalid port')),
-                Field('captcha', 'string', label='Enable Google Recapcha2 ?', default='disabled', requires=IS_IN_SET(['enabled','disabled'])),
-                Field('captcha_public_key', 'string'),
-                Field('captcha_private_key', 'string'),
-                Field('two_factor_authentication', 'string', label='Enable 2 Factor Authentication ?', default='disabled', requires=IS_IN_SET(['enabled','disabled']))
+                Field('smtp_user', 'string', label=T('SMTP Username'), widget=widget(
+                    _placeholder='user@mail.com'), requires=IS_NOT_EMPTY()),
+                Field('smtp_pass', 'password', label=T('SMTP Password'), widget=widget(
+                    _placeholder='****'), requires=IS_NOT_EMPTY()),
+                Field('smtp_sender', 'string', label=T('SMTP Sender'), widget=widget(
+                    _placeholder='some_mail@mail.com'), requires=IS_EMAIL()),
+                Field('smtp_host', 'string', label=T('SMTP Host'), widget=widget(
+                    _placeholder='smtp.gmail.com'), requires=IS_NOT_EMPTY()),
+                Field('smtp_port', 'integer', label=T('SMTP Port'), length=5, widget=widget(
+                    _placeholder='587'), requires=IS_INT_IN_RANGE(1, 65535, error_message='Invalid port')),
+                Field('captcha', 'string', label=T('Enable Google Recapcha2 ?'),
+                      default='disabled', requires=IS_IN_SET(['enabled', 'disabled'])),
+                Field('captcha_public_key', 'string',
+                      label=T('Captcha Public Key')),
+                Field('captcha_private_key', 'string',
+                      label=T('Captcha Private Key')),
+                Field('two_factor_authentication', 'string', label=T('Enable 2 Factor Authentication ?'),
+                      default='disabled', requires=IS_IN_SET(['enabled', 'disabled']))
                 )
 
 db.define_table('rules',
-               Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-               Field('rule_name', 'string', length=50,requires=IS_NOT_EMPTY()),
-               Field('status', 'string', default='On', requires=IS_IN_SET(['On','Off'])),
-               Field('body', 'text', requires=IS_NOT_EMPTY()),
-               )
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('rule_name', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
+                Field('status', 'string', default='On',
+                      requires=IS_IN_SET(['On', 'Off'])),
+                Field('body', 'text', requires=IS_NOT_EMPTY()),
+                )
 
 db.define_table('summary',
-               Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-               Field('app_name', 'string', length=50,requires=IS_NOT_EMPTY()),
-               Field('critical', 'integer', default=0),
-               Field('warning', 'integer', default=0),
-               Field('notice', 'integer', default=0),
-               Field('error', 'integer', default=0),
-               Field('total_requests', 'integer', default=0),
-               Field('old_size', 'integer', default=0),
-               )
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('app_name', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
+                Field('critical', 'integer', default=0),
+                Field('warning', 'integer', default=0),
+                Field('notice', 'integer', default=0),
+                Field('error', 'integer', default=0),
+                Field('total_requests', 'integer', default=0),
+                Field('old_size', 'integer', default=0),
+                )
 
 db.define_table('log_size',
-               Field('id_rand', 'string', length=50,requires=IS_NOT_EMPTY()),
-               Field('app_name', 'string', length=50,requires=IS_NOT_EMPTY()),
-               Field('log_type', 'string', default='modsec'),
-               Field('size', 'integer', default=0)
+                Field('id_rand', 'string', length=50, requires=IS_NOT_EMPTY()),
+                Field('app_name', 'string', length=50,
+                      requires=IS_NOT_EMPTY()),
+                Field('log_type', 'string', default='modsec'),
+                Field('size', 'integer', default=0)
                 )
 db.define_table('dummy',
                 Field('dummy_field', 'string', requires=IS_NOT_EMPTY())
                 )
-                
-from gluon.tools import Auth
-from gluon.tools import Recaptcha2
+
 auth = Auth(db)
 auth.settings.everybody_group_id = False
 
-#Setup Recapcha and 2 auth factor
+# Setup Recapcha and 2 auth factor
 general_conf = db(db.general_config.id == 1).select().first()
 enable_captcha = False
 captcha_public_key = ''
@@ -220,13 +261,14 @@ if general_conf:
         smtp_port = str(general_conf.smtp_port)
     if general_conf.smtp_sender:
         smtp_sender = general_conf.smtp_sender
-        
-        
-auth.settings.captcha = Recaptcha2(request, public_key=captcha_public_key, private_key=captcha_private_key, label='Please validate the captcha')
-auth.define_tables(username=True,signature=True,)
-auth.settings.logout_next=URL()
 
-#Comment the following line to allow registration
+
+auth.settings.captcha = Recaptcha2(request, public_key=captcha_public_key,
+                                   private_key=captcha_private_key, label='Please validate the captcha')
+auth.define_tables(username=True, signature=True,)
+auth.settings.logout_next = URL()
+
+# Comment the following line to allow registration
 auth.settings.actions_disabled.append('register')
 
 if enable_captcha:
@@ -236,23 +278,22 @@ else:
 auth.settings.two_factor_authentication_group = "auth2step"
 auth.settings.auth_two_factor_enabled = two_factor_authentication
 
-#SMPT server configuration
+# SMPT server configuration
 mail = auth.settings.mailer
 mail.settings.server = smtp_host+':'+smtp_port
 mail.settings.sender = smtp_sender
 mail.settings.login = smtp_user+':'+smtp_pass
 
 
-
 if db(db.n_interfaces.number).isempty():
     db.n_interfaces.insert(number=0)
-    
+
 if db(db.auth_user.id > 0).isempty():
     id_user = db.auth_user.insert(
-            username = 'admin',
-            password = db.auth_user.password.validate('admin')[0],
-            email = 'changeme@waf2py.org',
-            )
+        username='admin',
+        password=db.auth_user.password.validate('admin')[0],
+        email='changeme@waf2py.org',
+    )
 modsec3_default_config = """
 # Improve the quality of ModSecurity by sharing information about your
 # current ModSecurity version and dependencies versions.
@@ -594,10 +635,11 @@ server {
 """
 try:
     if db(db.basic_conf.modsec3_data_conf).isempty():
-        db.basic_conf.update_or_insert(db.basic_conf.id == 1, modsec3_data_conf=modsec3_default_config)
-
+        db.basic_conf.update_or_insert(
+            db.basic_conf.id == 1, modsec3_data_conf=modsec3_default_config)
 
     if db(db.basic_conf.nginx_data_conf).isempty():
-        db.basic_conf.update_or_insert(db.basic_conf.id == 1, nginx_data_conf=nginx_default_conf)
+        db.basic_conf.update_or_insert(
+            db.basic_conf.id == 1, nginx_data_conf=nginx_default_conf)
 except:
     pass
