@@ -257,11 +257,11 @@ def RuleEdit():
                     f.close()
                     #print('rule come from file rule')
             else:
-                session.flash = "Rule doesn't exist"
+                session.flash = T("Rule doesn't exist")
                 content = None
                 rule_name = ''
         else:
-            session.flash = "Incorrect id"
+            session.flash = T("Incorrect id")
             content = None
             rule_name = ''
 
@@ -694,34 +694,34 @@ def CreateNewApp():
             if any(c in AppName for c in "\"/'\;,=%#$*()[]?¿¡{}:!|&<>¨~°^ "):
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Add new app: Invalid characters in application URL")
-                session.flash = 'Invalid characters found'
+                session.flash = T('Invalid characters found')
             # Check if name contains dangerous character
             elif any(c in request.vars['name'] for c in "\"/'\;,=%#$*()[]?¿¡{}:!|&<>¨~°^ "):
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Add new app: Invalid characters in application Name")
-                session.flash = 'Invalid characters found'
+                session.flash = T('Invalid characters found')
 
             elif AppName[-1] == '.':
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Application url cannot end with dot(.)")
-                session.flash = 'Application url cannot end with dot(.)'
+                session.flash = T('Application url cannot end with dot(.)')
 
             elif AppName.startswith('https:'):
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Application url cannot start with https://")
-                session.flash = 'Application url cannot start with https://'
+                session.flash = T('Application url cannot start with https://')
 
             elif AppName.startswith('http:'):
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Application url cannot start with http://")
-                session.flash = 'Application url cannot start with http://'
+                session.flash = T('Application url cannot start with http://')
 
             else:
                 # check if app already exist in production
                 query = db(db.production.app_name == AppName).select(
                     db.production.app_name)
                 if query:
-                    session.flash = 'This Application Already Exist'
+                    session.flash = T('This Application Already Exist')
 
                 else:
                     # Get nginx and modsecurity default conf
@@ -794,22 +794,22 @@ def CreateNewApp():
                         modsec_conf_data='\n'.join(lista_modsec),
                     )
                     db.commit()
-                    session.flash = 'Application created'
+                    session.flash = T('Application created')
 
         else:
             if len(request.vars['app_url']) > 45:
-                session.flash = 'App Name too long'
+                session.flash = T('App Name too long')
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Create app: App Name too long ")
 
             elif request.vars['app_url'] == '':
-                session.flash = 'You must enter a name'
+                session.flash = T('You must enter a name')
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "Create app: you must enter a name ")
 
     except Exception as e:
         logger.Logger.NewLogError(db2, auth.user.username, str(e))
-        session.flash = str(e)
+        session.flash = T(str(e))
 
     return redirect(URL('new_app'))
 
@@ -1109,7 +1109,7 @@ def CheckProd():
     s = stuffs.Nginx()
     r = s.SyntaxCheck()
     if "Syntax OK" in r:
-        session.flash = 'Syntax OK'
+        session.flash = T('Syntax OK')
         redirect(URL('Websites'))
     else:
         redirect(URL('Websites'))
@@ -1132,7 +1132,8 @@ def EnableApp():
             b = a.Reload()
 
             if 'Bad Syntax' in b:
-                session.flash = 'Error in configuration, Not Enabled. --> ' + b
+                session.flash = T(
+                    'Error in configuration, Not Enabled. --> ') + b
                 logger.Logger.NewLogError(
                     db2, auth.user.username, "EnableApp: Error in configuration, Not Enabled. --> " + str(b))
                 redirect(URL('Websites'))
@@ -1147,7 +1148,7 @@ def EnableApp():
                     ['chown', '-R', 'www-data.www-data', '/opt/waf/nginx/var/log/%s' % (AppName)])
                 logger.Logger.NewLogApp(
                     db2, auth.user.username, "EnableApp: Enabled " + AppName)
-                session.flash = AppName + ' Enabled'
+                session.flash = AppName + ' ' + T('Enabled')
                 a.Reload()
                 redirect(URL('Websites'))
                 session.enabled = 'active'
@@ -1160,7 +1161,8 @@ def EnableApp():
                 subprocess.Popen(['sudo', 'chmod', '755', '-R', '/opt/waf/nginx/var/log/'], stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
         else:
-            session.flash = AppName + " has no IP assigned, first assign an IP to listen"
+            session.flash = AppName + " " + \
+                T("has no IP assigned, first assign an IP to listen")
             redirect(URL('Websites'))
     else:
         redirect(URL('Websites'))
@@ -1190,14 +1192,14 @@ def DisableApp():
 
         if 'Bad Syntax' in b:
             session.flash = B(
-                SPAN('Disabled but I will not reload until you fix the error: ->  ')) + b
+                SPAN(T('Disabled but I will not reload until you fix the error: ->') + '  ')) + b
             logger.Logger.NewLogError(
                 db2, auth.user.username, "DisableApp: Disabled but I will not reload until you fix the error: ->   " + str(b))
             redirect(URL('Websites'))
         else:
             logger.Logger.NewLogApp(
                 db2, auth.user.username, 'DisableApp: ' + query[0]['app_name'] + ' Disabled')
-            session.flash = query[0]['app_name'] + ' Disabled'
+            session.flash = query[0]['app_name'] + ' ' + T('Disabled')
             redirect(URL('Websites'))
             session.enabled = ''
             session.e_expanded = 'false'
@@ -1504,7 +1506,7 @@ def Mode():
         b = a.Reload()
 
         msg = 'Mode %s enabled' % (request.vars['mode'])
-        session.flash = 'Mode %s enabled' % (request.vars['mode'])
+        session.flash = T('Mode %s enabled') % (request.vars['mode'])
     else:
         msg = 'Error'
         logger.Logger.NewLogError(db2, auth.user.username, "Mode: Error")

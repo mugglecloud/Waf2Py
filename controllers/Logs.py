@@ -456,7 +456,7 @@ def DownloadError():
         r = A('Error_logs.tar.gz', _href='/Waf2Py/static/logs/error_logs_' +
               query[0]['app_name']+'_'+str(random)+'.tar.gz')
     else:
-        session.flash = 'Error in data supplied'
+        session.flash = T('Error in data supplied')
         r = ''
     return r
 
@@ -494,11 +494,11 @@ def DownloadLogZip():
         if out1 == 0:
             redirect(URL('static', 'logs/'+rand+log_name[0]['log_name']))
         else:
-            session.flash = 'Error in data supplied'
+            session.flash = T('Error in data supplied')
             redirect(URL('default', 'Websites'))
 
     else:
-        session.flash = 'Error in data supplied'
+        session.flash = T('Error in data supplied')
         redirect(URL('default', 'Websites'))
 
 
@@ -522,7 +522,7 @@ def DownloadDebug():
         r = A('Debug_logs.tar.gz', _href='/Waf2Py/static/logs/debug_logs_' +
               query[0]['app_name']+'_'+str(random)+'.tar.gz')
     else:
-        session.flash = 'Error in data supplied'
+        session.flash = T('Error in data supplied')
         r = ''
     return r
 
@@ -547,7 +547,7 @@ def DownloadModsecJson():
         r = A('Modsecurity_logs.tar.gz', _href='/Waf2Py/static/logs/modsec_logs_' +
               query[0]['app_name']+'_'+str(random)+'.tar.gz')
     else:
-        session.flash = 'Error in data supplied'
+        session.flash = T('Error in data supplied')
         r = ''
     return r
 
@@ -571,6 +571,6 @@ def DownloadAccess():
         r = A('Error_logs.tar.gz', _href='/Waf2Py/static/logs/access_logs_' +
               query[0]['app_name']+'_'+str(random)+'.tar.gz')
     else:
-        session.flash = 'Error in data supplied'
+        session.flash = T('Error in data supplied')
         r = ''
     return r

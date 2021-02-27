@@ -75,7 +75,7 @@ def AddInterface():
                     request.vars['ip'], request.vars['mask'], request.vars['name'], db)
 
                 if 'Interface' in c['message']:
-                    session.flash = 'Interface Added!'
+                    session.flash = T('Interface Added!')
                     db.system.insert(iface_ip=str(request.vars['ip']),
                                      iface_name=c['device'])
                 else:
@@ -83,9 +83,9 @@ def AddInterface():
             except Exception as e:
                 session.flash = str(e)
         else:
-            session.flash = 'Virtual IP exist'
+            session.flash = T('Virtual IP exist')
     else:
-        session.flash = 'Error in data suplied'
+        session.flash = T('Error in data suplied')
 
     return dict()
 
@@ -177,7 +177,7 @@ def DeleteRoute():
     # Check vars
     a = stuffs.Filtro().CheckStr(request.vars['id'])
     if a != 'YES':
-        session.flash = 'Error in data supplied'
+        session.flash = T('Error in data supplied')
         return
 
     query = db(db.routes.id_rand == request.vars['id']).select(
@@ -192,6 +192,6 @@ def DeleteRoute():
     db(db.routes.id_rand == request.vars['id']).delete()
 
     # redirect(URL('Routes'))
-    session.flash = 'Route Deleted'
+    session.flash = T('Route Deleted')
 
     return
