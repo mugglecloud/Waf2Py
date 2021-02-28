@@ -286,7 +286,7 @@ def GetActiveConnections():
 def ActiveConnections():
     direct_output = subprocess.check_output('ls', shell=True)
 
-    return dict(page="Active connections", icon="fa fa-arrows", title="",)
+    return dict(page=T("Active connections"), icon="fa fa-arrows", title="",)
 
 
 @auth.requires_login()
@@ -380,7 +380,7 @@ def ManageRules():
 
 @auth.requires_login()
 def index():
-    return dict(page="Welcome", icon="", title="")
+    return dict(page=T("Welcome"), icon="", title="")
 
 
 def user():
