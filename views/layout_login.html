@@ -84,13 +84,14 @@
     </div>
 
     <div class="login-box-body" id="roundedandsoft">
-
+      {{if response.flash:}}
       <div class="w2p_flash alert alert-dismissable alert-info" style="display:none; text-align:center; ">
-        {{=response.flash or ''}}</div>
+        {{=response.flash or ''}}
+      </div>
+      {{pass}}
       {{block center}}
       {{include}}
       {{pass}}
-
     </div>
 
   </div>
