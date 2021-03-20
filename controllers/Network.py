@@ -75,7 +75,7 @@ def AddInterface():
                     request.vars['ip'], request.vars['mask'], request.vars['name'], db)
 
                 if 'Interface' in c['message']:
-                    session.flash = T('Interface Added!')
+                    session.flash = T('Interface Added') + '!'
                     db.system.insert(iface_ip=str(request.vars['ip']),
                                      iface_name=c['device'])
                 else:
@@ -125,9 +125,9 @@ def DelInterface():
                 r = T('Virtual Ip removed')
         except:
             session.flash = T('Error in data supplied')
-            r = T('Error in data supplied')
+            r = 'Error in data supplied'
     else:
-        r = T('Error in data supplied')
+        r = 'Error in data supplied'
 
     return response.json(data=r)
 

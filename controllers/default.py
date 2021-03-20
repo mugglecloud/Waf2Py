@@ -208,7 +208,7 @@ def SaveRule():
                 UpdateFiles = stuffs.CreateFiles()
                 UpdateFiles.CreateModsecRule(
                     rules_path, rule_name, unquoted_body)
-                response.flash = 'Rule updated'
+                response.flash = T('Rule updated')
                 # reload nginx
                 stuffs.Nginx().Reload()
             else:
@@ -265,7 +265,7 @@ def RuleEdit():
             content = None
             rule_name = ''
 
-    return dict(icon="fa fa-pencil", page="Rule editor", title="Waf2Py - Rule editor", content=content, rule_name=rule_name)
+    return dict(icon="fa fa-pencil", page=T("Rule editor"), title="Waf2Py - " + T("Rule editor"), content=content, rule_name=rule_name)
 
 
 @auth.requires_login()
@@ -529,7 +529,7 @@ def ProdEdit():
             return dict(r_states=r_states, rule_list=rule_list, query=query, query2=query2, certificate=certificate, page=T("Editing") + " "+query[0]['app_name'], icon="fa fa-pencil", title="Modify the configuration")
 
     else:
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
         redirect(URL('Websites'))
 
 
@@ -975,7 +975,7 @@ def EngxEdit():
             response.flash = 'App does not exist'
 
     else:
-        response.flash = "Error in data supplied"
+        response.flash = T('Error in data supplied')
 
 
 @auth.requires_login()
@@ -1004,12 +1004,12 @@ def ModsEdit():
                 db2, auth.user.username, "Modsec conf Editor: new configuration created" + AppName)
 
         else:
-            response.flash = "Error in data supplied"
+            response.flash = T('Error in data supplied')
             logger.Logger.NewLogApp(
                 db2, auth.user.username, "Modsec conf Editor: Error in id parameter suplied " + AppName)
 
     else:
-        response.flash = "Error in data supplied"
+        response.flash = T('Error in data supplied')
         redirect(URL('new_app'))
 
 
@@ -1098,7 +1098,7 @@ def BackendIps():
         response.flash = 'Backend updated'
 
     else:
-        response.flash = "Error in data supplied"
+        response.flash = T('Error in data supplied')
 
     return dict()
 
@@ -1435,9 +1435,9 @@ def Listen():
                     logger.Logger.NewLogApp(db2, auth.user.username, "Listening: {} -> {} - Ports: HTTP -> {} HTTPS -> {}".format(
                         query[0]['app_name'],  request.vars['listen_ip'], request.vars['http_ports'], request.vars['https_ports']))
                     if IpChanged:
-                        response.flash = 'IP, HTTPS and HTTP ports saved'
+                        response.flash = T('IP, HTTPS and HTTP ports saved')
                     else:
-                        response.flash = 'HTTPS and HTTP ports saved'
+                        response.flash = T('HTTPS and HTTP ports saved')
 
                 # Reload changes
                 u = stuffs.Nginx()

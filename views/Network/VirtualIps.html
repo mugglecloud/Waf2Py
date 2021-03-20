@@ -50,15 +50,15 @@
           th1.appendChild(document.createTextNode("#"));
           th1.setAttribute("style", "width: 10px")
           var th2 = document.createElement('th');
-          th2.appendChild(document.createTextNode("IP"));
+          th2.appendChild(document.createTextNode("{{=T('IP')}}"));
           var th3 = document.createElement('th');
-          th3.appendChild(document.createTextNode("Interface"));
+          th3.appendChild(document.createTextNode("{{=T('Interface')}}"));
           var th4 = document.createElement('th');
-          th4.appendChild(document.createTextNode("Used By"));
+          th4.appendChild(document.createTextNode("{{=T('Used By')}}"));
           var th5 = document.createElement('th');
-          th5.appendChild(document.createTextNode("Status"));
+          th5.appendChild(document.createTextNode("{{=T('Status')}}"));
           var th6 = document.createElement('th');
-          th6.appendChild(document.createTextNode("Delete"));
+          th6.appendChild(document.createTextNode("{{=T('Delete')}}"));
 
 
           thead1Tr.appendChild(th1);
@@ -134,17 +134,16 @@
 </script>
 
 <script>
-
   function DeleteConfirm(ip) {
     swal({
-      title: T('Confirmation needed'),
-      text: T("Delete virtual IP: ") + ip + " ?",
+      title: "{{=T('Confirmation needed')}}",
+      text: "{{=T('Delete virtual IP')}}" + ": " + ip + " ?",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
+      confirmButtonText: "{{=T('Yes')}}",
+      cancelButtonText: "{{=T('No')}}",
       confirmButtonClass: 'btn btn-success',
       cancelButtonClass: 'btn btn-danger',
       buttonsStyling: true,
@@ -160,10 +159,7 @@
           }
 
         });
-
       }
     })
-
   }
-
 </script>

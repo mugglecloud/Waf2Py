@@ -8,34 +8,36 @@ import re
 ProdNginxAvail = '/opt/waf/nginx/etc/sites-available/'
 DenyPathsDir = '/opt/waf/nginx/etc/rewrite/paths/'
 
+
 @auth.requires_login()
 def AddHeaders():
     a = stuffs.Filtro()
-    #print request.vars
+    # print request.vars
     check_list = []
 
     try:
         b = a.CheckStr(request.vars['id'])
 
-
-
     except Exception as debug:
         d = debug
         r = debug
         b = 'NO'
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
 
-    #something strange happens below, is more slow when POST contains no data .......
+    # something strange happens below, is more slow when POST contains no data .......
     if b == 'YES':
 
         if len(request.vars) == 1 and request.vars.keys()[0] == 'id':
-            db(db.production.id_rand == request.vars['id']).update(extra_headers="")
+            db(db.production.id_rand == request.vars['id']).update(
+                extra_headers="")
             nginx_conf = db(db.production.id_rand == request.vars['id']).select(db.production.app_name,
                                                                                 db.production.nginx_conf_data)
             replace = re.sub(r'(^            ##startInsertHead\w+##\n).*(^            ##endInsertHead\w+##)',
-                             r'\1%s\2' % (''), nginx_conf[0]['nginx_conf_data'],
+                             r'\1%s\2' % (
+                                 ''), nginx_conf[0]['nginx_conf_data'],
                              flags=re.S | re.M)
-            db(db.production.id_rand == request.vars['id']).update(nginx_conf_data=replace)  # '\n'.join(r))
+            db(db.production.id_rand == request.vars['id']).update(
+                nginx_conf_data=replace)  # '\n'.join(r))
             db.commit()
             UpdateFiles = stuffs.CreateFiles()
             # try:
@@ -43,7 +45,8 @@ def AddHeaders():
             # get the new conf
             nginx_conf = db(db.production.id_rand == request.vars['id']).select(db.production.app_name,
                                                                                 db.production.nginx_conf_data)
-            UpdateFiles.CreateNginxFiles(ProdNginxAvail, nginx_conf[0]['app_name'], nginx_conf[0]['nginx_conf_data'])
+            UpdateFiles.CreateNginxFiles(
+                ProdNginxAvail, nginx_conf[0]['app_name'], nginx_conf[0]['nginx_conf_data'])
             response.flash = 'Configuration was saved'
             r = stuffs.Nginx()
             r.Reload()
@@ -55,7 +58,7 @@ def AddHeaders():
                         check_list.append('YES')
                     else:
                         check_list.append('NO')
-                        response.flash = 'Error in data supplied'
+                        response.flash = T('Error in data supplied')
 
                     if request.vars[test][1] == "":
                         check_list.append('NO')
@@ -75,26 +78,31 @@ def AddHeaders():
             for i in request.vars.keys():
 
                 if 'cookie' in i:
-                    cookies.append('            add_header '+'"'+request.vars[i][0]+ '" "'+ request.vars[i][1] +'";\n')
-                    cookies_list = cookies_list + request.vars[i][0] + ' '+ request.vars[i][1] + '\n'
+                    cookies.append('            add_header '+'"' +
+                                   request.vars[i][0] + '" "' + request.vars[i][1] + '";\n')
+                    cookies_list = cookies_list + \
+                        request.vars[i][0] + ' ' + request.vars[i][1] + '\n'
 
                 else:
                     pass
 
-            db(db.production.id_rand == request.vars['id']).update(extra_headers=cookies_list)
+            db(db.production.id_rand == request.vars['id']).update(
+                extra_headers=cookies_list)
             nginx_conf = db(db.production.id_rand == request.vars['id']).select(db.production.app_name,
-                                                                                      db.production.nginx_conf_data)
-            replace = re.sub(r'(^            ##startInsertHead\w+##\n).*(^            ##endInsertHead\w+##)', r'\1%s\2' %(''.join(cookies)), nginx_conf[0]['nginx_conf_data'],
-                   flags=re.S | re.M)
-            db(db.production.id_rand == request.vars['id']).update(nginx_conf_data=replace)  # '\n'.join(r))
+                                                                                db.production.nginx_conf_data)
+            replace = re.sub(r'(^            ##startInsertHead\w+##\n).*(^            ##endInsertHead\w+##)', r'\1%s\2' % (''.join(cookies)), nginx_conf[0]['nginx_conf_data'],
+                             flags=re.S | re.M)
+            db(db.production.id_rand == request.vars['id']).update(
+                nginx_conf_data=replace)  # '\n'.join(r))
             db.commit()
             UpdateFiles = stuffs.CreateFiles()
             try:
 
-                #get the new conf
+                # get the new conf
                 nginx_conf = db(db.production.id_rand == request.vars['id']).select(db.production.app_name,
-                                                                                db.production.nginx_conf_data)
-                UpdateFiles.CreateNginxFiles(ProdNginxAvail, nginx_conf[0]['app_name'], nginx_conf[0]['nginx_conf_data'])
+                                                                                    db.production.nginx_conf_data)
+                UpdateFiles.CreateNginxFiles(
+                    ProdNginxAvail, nginx_conf[0]['app_name'], nginx_conf[0]['nginx_conf_data'])
                 response.flash = 'Configuration was saved'
                 r = stuffs.Nginx()
                 r.Reload()
@@ -105,7 +113,7 @@ def AddHeaders():
                 session.flash = e
                 r = e
     else:
-        #print 'not continue'
+        # print 'not continue'
 
         r = 'Error in data supplied'
 
@@ -114,7 +122,7 @@ def AddHeaders():
 
 @auth.requires_login()
 def DenyPaths():
-    #print request.vars
+    # print request.vars
 
     a = stuffs.Filtro()
     r = ''
@@ -123,7 +131,7 @@ def DenyPaths():
     except Exception as error:
         r = error
         b = 'NO'
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
     path_list = []
     count_safe = 0
     go_ahead = ''
@@ -135,22 +143,25 @@ def DenyPaths():
             elif 'path' in i:
                 path_list.append(request.vars[i])
                 count_safe += 1
-        if count_safe <= 20: #increase here if you want more than 20 paths to deny...
+        if count_safe <= 20:  # increase here if you want more than 20 paths to deny...
             go_ahead = 'YES'
         else:
             go_ahead = 'NO'
     if b == 'YES' and go_ahead == 'YES':
-        #falta hacer que se guarden en la db y se muestren en la vista
+        # falta hacer que se guarden en la db y se muestren en la vista
         paths = '\n'.join(path_list)
-        db(db.production.id_rand == request.vars['id']).update(paths_denied=paths)
+        db(db.production.id_rand == request.vars['id']).update(
+            paths_denied=paths)
         total_deny = ''
         for path in path_list:
-            #print 'path: ', path
-            total_deny += "location %s {\nreturn 403;}\n" %(path)
+            # print 'path: ', path
+            total_deny += "location %s {\nreturn 403;}\n" % (path)
 
-        #print 'total: ', total_deny
-        name = db(db.production.id_rand == request.vars['id']).select(db.production.app_name)
-        f = open(DenyPathsDir+name[0]['app_name']+'/'+name[0]['app_name']+'_denyPaths.conf', 'w')
+        # print 'total: ', total_deny
+        name = db(db.production.id_rand == request.vars['id']).select(
+            db.production.app_name)
+        f = open(DenyPathsDir+name[0]['app_name']+'/' +
+                 name[0]['app_name']+'_denyPaths.conf', 'w')
         f.write(total_deny)
         f.close()
         r = stuffs.Nginx()
@@ -159,7 +170,7 @@ def DenyPaths():
         r = 'Configuration was saved'
 
     else:
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
         if r == '':
             r = 'Error in data supplied'
 

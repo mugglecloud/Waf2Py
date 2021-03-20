@@ -68,7 +68,7 @@ def ExcludeLocal():
             r = 'Rule ID already excluded'
 
     else:
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
         r = 'Error in data supplied'
     # print b,c,d,f
     return response.json(r)
@@ -129,7 +129,7 @@ def ExcludeGlobal():
             r = 'Rule ID already excluded'
 
     else:
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
         r = 'Error in data supplied'
 
     return response.json(r)
@@ -224,7 +224,7 @@ def WafLogs():
         summary_stats = db(db.summary.id_rand ==
                            request.args[0]).select().first()
     else:
-        response.flash = 'Error in data supplied'
+        response.flash = T('Error in data supplied')
         redirect(URL('default', 'Websites'))
         id_rand = '#'
 

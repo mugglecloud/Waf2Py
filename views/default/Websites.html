@@ -87,9 +87,7 @@
                         <div align="center" class="form-group">
                           <select class="form-control" id="sel" name="sel" style="width:auto; vertical-align: middle;"
                             onfocus="this.oldvalue = this.value;" onchange="ChangeMode.call(this, event, 
-                            '{{=str(row['id_rand'])}}', 
-                            '{{=str(row['mode'])}}' );
-                            this.oldvalue=this.value;">
+                            " {{=str(row['id_rand'])}}", "{{=str(row['mode'])}}" ); this.oldvalue=this.value;">
                             {{if row['mode'] == 'Defend':}}
                             <option id="OptionDefend" value="Defend" selected>
                               {{=T("Defend")}}</option>
@@ -113,15 +111,15 @@
                         <a class="btn btn-xs glyphicon glyphicon-pencil info_bulma"
                           href="{{=URL('default','ProdEdit/'+ row['id_rand'])}}" data-toggle="tooltip"
                           data-placement="top" title="{{=T(" Edit application")}}"></a>
-                        <a class="btn btn-xs success_bulma glyphicon glyphicon-play" onclick="EnableWebsite("
-                          {{=row['id_rand']}}", "{{=row[" app_name"]}}")" data-toggle="tooltip" data-placement="top"
-                          title="{{=T(" Enable application")}}"></a>
-                        <a class="btn btn-xs warning_bulma glyphicon glyphicon-pause" onclick="DisableWebsite("
-                          {{=row["id_rand"]}}", '{{=row["app_name"]}}' )" data-toggle="tooltip" data-placement="top"
-                          title="{{=T(" Disable application")}}"></a>
-                        <a class="btn btn-xs danger_bulma glyphicon glyphicon-trash" onclick="DeleteWebsite("
-                          {{=row["id_rand"]}}", '{{=row["app_name"]}}' )" data-toggle="tooltip" data-placement="top"
-                          title="{{=T(" Remove application")}}"></a>
+                        <a class="btn btn-xs success_bulma glyphicon glyphicon-play"
+                          onclick="EnableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip"
+                          data-placement="top" title="{{=T(" Enable application")}}"></a>
+                        <a class="btn btn-xs warning_bulma glyphicon glyphicon-pause"
+                          onclick="DisableWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip"
+                          data-placement="top" title="{{=T(" Disable application")}}"></a>
+                        <a class="btn btn-xs danger_bulma glyphicon glyphicon-trash"
+                          onclick="DeleteWebsite('{{=row['id_rand']}}', '{{=row['app_name']}}')" data-toggle="tooltip"
+                          data-placement="top" title="{{=T(" Remove application")}}"></a>
                     </tr>
                     {{else:}}
                     <tr>
@@ -314,7 +312,7 @@
 
   function EnableWebsite(id, name) {
     swal({
-      title: "{{=T('Enable Website')}}: " + name + ' ?',
+      title: "{{=T('Enable Website')}}" + ": " + name + ' ?',
       type: 'question',
       showCancelButton: true,
       confirmButtonColor: '#008fd4',

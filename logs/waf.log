@@ -6,3 +6,25 @@
 [2021-02-28 09:16] admin: Application wasinspiron.localdeleted
 [2021-02-28 09:16] admin: Reload Succesfull
 [2021-02-28 09:16] admin: Delete app inspiron.local
+[2021-03-20 13:15] admin: Deploye Application: inspiron.localdeployed
+[2021-03-20 13:25] admin: Manage rules: Rule: REQUEST-901-INITIALIZATION On
+[2021-03-20 13:25] admin: Manage rules: Rule: REQUEST-901-INITIALIZATION Off
+[2021-03-20 14:00] admin: DisableApp: inspiron.local Disabled
+[2021-03-20 14:01] admin: Listening: inspiron.local -> 192.168.1.10 - Ports: HTTP -> 80 HTTPS -> 443
+[2021-03-20 14:01] admin: Listening: inspiron.local -> 192.168.1.10 - Ports: HTTP -> 80 HTTPS -> 443
+[2021-03-20 14:01] admin: Listening: inspiron.local -> 192.168.1.10 - Ports: HTTP -> 80 HTTPS -> 443
+[2021-03-20 14:02] admin: Listening: inspiron.local -> 192.168.1.10 - Ports: HTTP -> 80 HTTPS -> 443
+[2021-03-20 14:02] admin: Listening: inspiron.local -> 192.168.1.10 - Ports: HTTP -> 80 HTTPS -> 443
+[2021-03-20 14:07] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:07] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:52] admin: DisableApp: inspiron.local Disabled
+[2021-03-20 14:52] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:52] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:53] admin: DisableApp: inspiron.local Disabled
+[2021-03-20 14:53] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:53] admin: DisableApp: inspiron.local Disabled
+[2021-03-20 14:53] admin: DisableApp: inspiron.local Disabled
+[2021-03-20 14:53] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:53] admin: EnableApp: Enabled inspiron.local
+[2021-03-20 14:54] admin: DisableApp: inspiron.local Disabled
+[2021-03-20 14:55] admin: EnableApp: Enabled inspiron.local

@@ -65,10 +65,10 @@
               <td style="vertical-align: middle" align="center">
                 <h4>
                   <a target="_blank" href="/Waf2Py/default/RuleEdit/{{=query[0]['id_rand']}}/{{=rule.title()}}"><span
-                      class="label success_light_bulma"><i class="fa fa-edit"></i>Edit rule</span>
+                      class="label success_light_bulma"><i class="fa fa-edit"></i>{{=T("Edit rule")}}</span>
                   </a>
                 </h4>
-                {{=A((SPAN(_class="fa fa-edit"),' Edit rule'),
+                {{=A((SPAN(_class="fa fa-edit"),' ' + T("Edit rule")),
                 callback=URL('default', 'RuleEdit', args=[rule.title(),
                 query[0]['id_rand']]),target="_blank")}}
               </td>
